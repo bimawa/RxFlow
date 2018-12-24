@@ -29,8 +29,8 @@ class SettingsFlow: Flow {
         print("\(type(of: self)): \(#function)")
     }
 
-    func navigate(to step: Step) -> NextFlowItems {
-        guard let step = step as? DemoStep else { return NextFlowItems.none }
+    func navigate(to step: Step) -> FlowContributors {
+        guard let step = step as? DemoStep else { return FlowContributors.none }
 
         switch step {
         case .settings:
@@ -46,20 +46,20 @@ class SettingsFlow: Flow {
         case .about:
             return navigateToAboutScreen()
         case .settingsIsComplete:
-            return NextFlowItems.end(withStepForParentFlow: DemoStep.settingsIsComplete)
+            return FlowContributors.end(withStepForParentFlow: DemoStep.settingsIsComplete)
         default:
-            return NextFlowItems.none
+            return FlowContributors.none
         }
     }
 
-    private func popToMasterViewController() -> NextFlowItems {
+    private func popToMasterViewController() -> FlowContributors {
         if let navigationController = self.rootViewController.viewControllers[0] as? UINavigationController {
             navigationController.popToRootViewController(animated: true)
         }
         return .none
     }
 
-    private func navigateToSettingsScreen() -> NextFlowItems {
+    private func navigateToSettingsScreen() -> FlowContributors {
         let navigationController = UINavigationController()
         let settingsListViewController = SettingsListViewController.instantiate()
         let settingsLoginViewController = SettingsLoginViewController.instantiate()
@@ -77,36 +77,36 @@ class SettingsFlow: Flow {
             navigationBarItem.setRightBarButton(settingsButton, animated: false)
         }
 
-        return .multiple(flowItems: [NextFlowItem(nextPresentable: settingsListViewController,
-                                                  nextStepper: settingsListViewController),
-                                    NextFlowItem(nextPresentable: settingsLoginViewController,
-                                                 nextStepper: settingsLoginViewController)])
+        return .multiple(flowItems: [FlowContributor(nextPresentable: settingsListViewController,
+                                                     nextStepper: settingsListViewController),
+                                     FlowContributor(nextPresentable: settingsLoginViewController,
+                                                     nextStepper: settingsLoginViewController)])
     }
 
-    private func navigateToLoginScreen() -> NextFlowItems {
+    private func navigateToLoginScreen() -> FlowContributors {
         let settingsLoginViewController = SettingsLoginViewController.instantiate()
         settingsLoginViewController.title = "Login"
         self.rootViewController.showDetailViewController(settingsLoginViewController, sender: nil)
-        return .one(flowItem: NextFlowItem(nextPresentable: settingsLoginViewController,
-                                           nextStepper: settingsLoginViewController))
+        return .one(flowItem: FlowContributor(nextPresentable: settingsLoginViewController,
+                                              nextStepper: settingsLoginViewController))
     }
 
-    private func navigateToApiKeyScreen() -> NextFlowItems {
+    private func navigateToApiKeyScreen() -> FlowContributors {
         let settingsViewModel = SettingsApiKeyViewModel()
         let settingsViewController = SettingsApiKeyViewController.instantiate(withViewModel: settingsViewModel,
                                                                               andServices: self.services)
         settingsViewController.title = "API Key"
         self.rootViewController.showDetailViewController(settingsViewController, sender: nil)
-        return .one(flowItem: NextFlowItem(nextPresentable: settingsViewController,
-                                           nextStepper: settingsViewModel))
+        return .one(flowItem: FlowContributor(nextPresentable: settingsViewController,
+                                              nextStepper: settingsViewModel))
     }
 
-    private func navigateToAboutScreen() -> NextFlowItems {
+    private func navigateToAboutScreen() -> FlowContributors {
         let settingsAboutViewController = SettingsAboutViewController.instantiate()
         settingsAboutViewController.title = "About"
         self.rootViewController.showDetailViewController(settingsAboutViewController, sender: nil)
-        return .one(flowItem: NextFlowItem(nextPresentable: settingsAboutViewController,
-                                           nextStepper: settingsAboutViewController))
+        return .one(flowItem: FlowContributor(nextPresentable: settingsAboutViewController,
+                                              nextStepper: settingsAboutViewController))
     }
 
 }

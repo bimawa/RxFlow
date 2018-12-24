@@ -10,7 +10,6 @@
 // Its License can be found here: ../DependenciesLicenses/devxoul-RxViewController-License
 
 import UIKit.UIViewController
-
 import RxSwift
 import RxCocoa
 

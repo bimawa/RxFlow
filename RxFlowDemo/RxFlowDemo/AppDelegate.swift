@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let disposeBag = DisposeBag()
     var window: UIWindow?
-    var coordinator = Coordinator()
+    var coordinator = FlowCoordinator()
     let moviesService = MoviesService()
     let preferencesService = PreferencesService()
     var appFlow: AppFlow!
@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         self.appFlow = AppFlow(withWindow: window, andServices: self.appServices)
 
-        coordinator.coordinate(flow: self.appFlow, withStepper: AppStepper(withServices: self.appServices))
+        coordinator.coordinate(flow: self.appFlow, with: AppStepper(withServices: self.appServices))
 
         return true
     }

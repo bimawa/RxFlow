@@ -19,10 +19,10 @@ class SettingsLoginViewController: UIViewController, StoryboardBased, Stepper {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        proceedButton.rx.tap
+        _ = proceedButton.rx.tap
+            .takeUntil(self.rx.deallocating)
             .map { DemoStep.loginIsComplete }
             .bind(to: self.step)
-            .disposed(by: disposeBag)
     }
 
 }

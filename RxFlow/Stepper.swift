@@ -31,6 +31,15 @@ public class OneStepper: Stepper {
     }
 }
 
+/// A Simple Stepper that has one goal: emit a first default step equal to RxFlowStep.start
+public class DefaultStepper: OneStepper {
+
+    /// Initialize the DefaultStepper
+    public init () {
+        super.init(withSingleStep: RxFlowStep.start)
+    }
+}
+
 /// A Stepper that combines multiple steppers. All those Steppers will be associated
 /// to the Presentable that is given within the NextFlowItem
 final public class CompositeStepper: Stepper {
@@ -57,7 +66,7 @@ final class NoneStepper: OneStepper {
 public extension Stepper {
 
     /// The step Subject in which to publish new Steps
-    public var step: BehaviorRelay<Step> {
+    var step: BehaviorRelay<Step> {
         return self.synchronized {
             if let subject = objc_getAssociatedObject(self, &subjectContext) as? BehaviorRelay<Step> {
                 return subject
